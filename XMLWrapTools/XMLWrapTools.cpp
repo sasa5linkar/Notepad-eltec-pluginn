@@ -18,7 +18,14 @@
 
 extern NppData nppData;
 
-// Helper function to get current Scintilla handle
+/**
+ * @brief Retrieves the handle of the active Scintilla editor.
+ *
+ * Queries Notepad++ to determine which Scintilla view is active and returns
+ * the corresponding window handle.
+ *
+ * @return HWND Handle to the active Scintilla: the main view handle if the primary view is active, otherwise the secondary view handle.
+ */
 HWND getCurrentScintilla()
 {
     int which = -1;
@@ -26,7 +33,12 @@ HWND getCurrentScintilla()
     return (which == 0) ? nppData._scintillaMainHandle : nppData._scintillaSecondHandle;
 }
 
-// Helper function to convert wide string to UTF-8
+/**
+ * @brief Converts a wide-character string to a UTF-8 encoded byte string.
+ *
+ * @param wstr Wide string to convert.
+ * @return std::string UTF-8 encoded representation of `wstr`; returns an empty string if `wstr` is empty.
+ */
 std::string wstringToUtf8(const std::wstring& wstr)
 {
     if (wstr.empty()) return std::string();
@@ -37,7 +49,12 @@ std::string wstringToUtf8(const std::wstring& wstr)
     return strTo;
 }
 
-// Helper function to convert UTF-8 to wide string
+/**
+ * @brief Converts a UTF-8 encoded std::string to a std::wstring.
+ *
+ * @param str UTF-8 encoded input string.
+ * @return std::wstring Converted wide string (UTF-16 on Windows). Returns an empty std::wstring if `str` is empty.
+ */
 std::wstring utf8ToWstring(const std::string& str)
 {
     if (str.empty()) return std::wstring();
@@ -48,7 +65,15 @@ std::wstring utf8ToWstring(const std::string& str)
     return wstrTo;
 }
 
-// Main wrapping function
+/****
+ * @brief Wraps the current Scintilla selection with the provided prefix and suffix.
+ *
+ * If no text is selected, displays an informational message box and returns without modifying the document.
+ * When a selection exists, replaces it with prefix + selectedText + suffix and groups the change into a single undo action.
+ *
+ * @param prefix Wide-string to insert before the selected text.
+ * @param suffix Wide-string to insert after the selected text.
+ */
 void wrapSelection(const std::wstring& prefix, const std::wstring& suffix)
 {
     HWND curScintilla = getCurrentScintilla();

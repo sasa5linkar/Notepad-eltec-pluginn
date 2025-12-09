@@ -19,6 +19,7 @@
 const TCHAR NPP_PLUGIN_NAME[] = TEXT("XML Wrap Tools");
 
 const int nbFunc = 7;
+const int nbToolbarIcons = nbFunc;  // Number of toolbar icons matches number of functions
 
 FuncItem funcItem[nbFunc];
 
@@ -27,7 +28,7 @@ NppData nppData;
 HINSTANCE _hInst;
 
 // Array to store toolbar icon handles for cleanup
-HBITMAP _toolbarIcons[7] = {NULL};
+HBITMAP _toolbarIcons[nbToolbarIcons] = {NULL};
 
 void pluginInit(HANDLE hModule);
 void pluginCleanUp();

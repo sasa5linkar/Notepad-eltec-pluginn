@@ -17,6 +17,7 @@
 
 extern FuncItem funcItem[nbFunc];
 extern NppData nppData;
+extern HBITMAP _toolbarIcons[nbToolbarIcons];
 
 /**
  * @brief Handles DLL lifetime events and invokes plugin initialization and cleanup.
@@ -187,7 +188,7 @@ void pluginInit(HANDLE /*hModule*/)
 void pluginCleanUp()
 {
     // Release toolbar icon bitmaps
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < nbToolbarIcons; i++)
     {
         if (_toolbarIcons[i])
         {

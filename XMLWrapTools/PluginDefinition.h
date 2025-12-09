@@ -26,11 +26,14 @@ NppData nppData;
 
 HINSTANCE _hInst;
 
+// Array to store toolbar icon handles for cleanup
+HBITMAP _toolbarIcons[7] = {NULL};
+
 void pluginInit(HANDLE hModule);
 void pluginCleanUp();
 void commandMenuInit();
 void commandMenuCleanUp();
-bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey *sk = NULL, bool check0nInit = false);
+bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey *sk = NULL, bool checkOnInit = false);
 
 // Plugin command functions
 void func_wrapHead();

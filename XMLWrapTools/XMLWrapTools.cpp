@@ -91,7 +91,17 @@ void wrapSelection(const std::wstring& prefix, const std::wstring& suffix)
     
     // Get the selected text
     long selLength = selEnd - selStart;
-    char* selectedText = new char[selLength + 1];
+    char* selectedText = nullptr;
+    
+    try
+    {
+        selectedText = new char[selLength + 1];
+    }
+    catch (const std::bad_alloc&)
+    {
+        ::MessageBox(nppData._nppHandle, TEXT("Memory allocation failed."), TEXT("XML Wrap Tools"), MB_OK | MB_ICONERROR);
+        return;
+    }
     
     Sci_TextRange tr;
     tr.chrg.cpMin = selStart;

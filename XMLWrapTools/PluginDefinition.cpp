@@ -57,11 +57,11 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD reasonForCall, LPVOID /*lpReserved*/
 extern "C" /**
  * @brief Stores Notepad++ host data and initializes the plugin's command menu.
  *
- * @param notpadPlusData Structure provided by Notepad++ containing handles and references the plugin needs (saved to the module-global `nppData`).
+ * @param notepadPlusData Structure provided by Notepad++ containing handles and references the plugin needs (saved to the module-global `nppData`).
  */
-__declspec(dllexport) void setInfo(NppData notpadPlusData)
+__declspec(dllexport) void setInfo(NppData notepadPlusData)
 {
-    nppData = notpadPlusData;
+    nppData = notepadPlusData;
     commandMenuInit();
 }
 
@@ -108,6 +108,9 @@ __declspec(dllexport) void beNotified(SCNotification *notifyCode)
                                                        IMAGE_BITMAP, 16, 16, LR_LOADMAP3DCOLORS);
                 if (hBitmap)
                 {
+                    // Store the handle for cleanup later
+                    _toolbarIcons[cmdIndex] = hBitmap;
+                    
                     toolbarIconsWithDarkMode icon;
                     icon.hToolbarBmp = hBitmap;
                     icon.hToolbarIcon = hBitmap;
@@ -178,11 +181,20 @@ void pluginInit(HANDLE /*hModule*/)
 /**
  * @brief Perform plugin shutdown and release resources before unload.
  *
- * Releases any allocated resources and performs teardown required when the plugin
- * is being unloaded (for example on DLL process detach).
+ * Releases any allocated resources (including toolbar icon bitmaps) and performs
+ * teardown required when the plugin is being unloaded (for example on DLL process detach).
  */
 void pluginCleanUp()
 {
+    // Release toolbar icon bitmaps
+    for (int i = 0; i < 7; i++)
+    {
+        if (_toolbarIcons[i])
+        {
+            ::DeleteObject(_toolbarIcons[i]);
+            _toolbarIcons[i] = NULL;
+        }
+    }
 }
 
 /**
@@ -222,10 +234,10 @@ void commandMenuCleanUp()
  * @param cmdName Null-terminated string to display as the command name in the menu/toolbar.
  * @param pFunc Pointer to the command callback function.
  * @param sk Optional pointer to a ShortcutKey structure for the command; may be null.
- * @param check0nInit If true, the command will be marked checked on initialization.
+ * @param checkOnInit If true, the command will be marked checked on initialization.
  * @return true if the command was registered successfully, false if `index` is out of range or `pFunc` is null.
  */
-bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey *sk, bool check0nInit)
+bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey *sk, bool checkOnInit)
 {
     if (index >= nbFunc)
         return false;
@@ -235,7 +247,7 @@ bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey 
 
     lstrcpy(funcItem[index]._itemName, cmdName);
     funcItem[index]._pFunc = pFunc;
-    funcItem[index]._init2Check = check0nInit;
+    funcItem[index]._init2Check = checkOnInit;
     funcItem[index]._pShKey = sk;
     return true;
 }

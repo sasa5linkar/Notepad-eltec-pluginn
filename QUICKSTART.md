@@ -95,4 +95,4 @@ For issues, questions, or contributions:
 
 ## License
 
-MIT License - See LICENSE file for details
+GNU General Public License v2.0 - See README.md for details

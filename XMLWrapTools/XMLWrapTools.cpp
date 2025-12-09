@@ -15,6 +15,7 @@
 #include "PluginDefinition.h"
 #include "Scintilla.h"
 #include <string>
+#include <new>
 
 extern NppData nppData;
 

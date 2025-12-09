@@ -65,48 +65,29 @@ extern "C" __declspec(dllexport) void beNotified(SCNotification *notifyCode)
     {
         case NPPN_TBMODIFICATION:
         {
-            // Add toolbar icons for our commands
-            toolbarIconsWithDarkMode iconHead;
-            iconHead.hToolbarBmp = (HBITMAP)::LoadImage(_hInst, MAKEINTRESOURCE(IDB_HEAD), IMAGE_BITMAP, 16, 16, LR_LOADMAP3DCOLORS);
-            iconHead.hToolbarIcon = iconHead.hToolbarBmp;
-            iconHead.hToolbarIconDarkMode = iconHead.hToolbarBmp;
-            ::SendMessage(nppData._nppHandle, NPPM_ADDTOOLBARICON_FORDARKMODE, (WPARAM)funcItem[0]._cmdID, (LPARAM)&iconHead);
+            // Helper function to add a single toolbar icon
+            auto addToolbarIcon = [](int resourceId, int cmdIndex) {
+                HBITMAP hBitmap = (HBITMAP)::LoadImage(_hInst, MAKEINTRESOURCE(resourceId), 
+                                                       IMAGE_BITMAP, 16, 16, LR_LOADMAP3DCOLORS);
+                if (hBitmap)
+                {
+                    toolbarIconsWithDarkMode icon;
+                    icon.hToolbarBmp = hBitmap;
+                    icon.hToolbarIcon = hBitmap;
+                    icon.hToolbarIconDarkMode = hBitmap;
+                    ::SendMessage(nppData._nppHandle, NPPM_ADDTOOLBARICON_FORDARKMODE, 
+                                 (WPARAM)funcItem[cmdIndex]._cmdID, (LPARAM)&icon);
+                }
+            };
 
-            toolbarIconsWithDarkMode iconTitle;
-            iconTitle.hToolbarBmp = (HBITMAP)::LoadImage(_hInst, MAKEINTRESOURCE(IDB_TITLE), IMAGE_BITMAP, 16, 16, LR_LOADMAP3DCOLORS);
-            iconTitle.hToolbarIcon = iconTitle.hToolbarBmp;
-            iconTitle.hToolbarIconDarkMode = iconTitle.hToolbarBmp;
-            ::SendMessage(nppData._nppHandle, NPPM_ADDTOOLBARICON_FORDARKMODE, (WPARAM)funcItem[1]._cmdID, (LPARAM)&iconTitle);
-
-            toolbarIconsWithDarkMode iconHi;
-            iconHi.hToolbarBmp = (HBITMAP)::LoadImage(_hInst, MAKEINTRESOURCE(IDB_HI), IMAGE_BITMAP, 16, 16, LR_LOADMAP3DCOLORS);
-            iconHi.hToolbarIcon = iconHi.hToolbarBmp;
-            iconHi.hToolbarIconDarkMode = iconHi.hToolbarBmp;
-            ::SendMessage(nppData._nppHandle, NPPM_ADDTOOLBARICON_FORDARKMODE, (WPARAM)funcItem[2]._cmdID, (LPARAM)&iconHi);
-
-            toolbarIconsWithDarkMode iconQuote;
-            iconQuote.hToolbarBmp = (HBITMAP)::LoadImage(_hInst, MAKEINTRESOURCE(IDB_QUOTE), IMAGE_BITMAP, 16, 16, LR_LOADMAP3DCOLORS);
-            iconQuote.hToolbarIcon = iconQuote.hToolbarBmp;
-            iconQuote.hToolbarIconDarkMode = iconQuote.hToolbarBmp;
-            ::SendMessage(nppData._nppHandle, NPPM_ADDTOOLBARICON_FORDARKMODE, (WPARAM)funcItem[3]._cmdID, (LPARAM)&iconQuote);
-
-            toolbarIconsWithDarkMode iconTrailer;
-            iconTrailer.hToolbarBmp = (HBITMAP)::LoadImage(_hInst, MAKEINTRESOURCE(IDB_TRAILER), IMAGE_BITMAP, 16, 16, LR_LOADMAP3DCOLORS);
-            iconTrailer.hToolbarIcon = iconTrailer.hToolbarBmp;
-            iconTrailer.hToolbarIconDarkMode = iconTrailer.hToolbarBmp;
-            ::SendMessage(nppData._nppHandle, NPPM_ADDTOOLBARICON_FORDARKMODE, (WPARAM)funcItem[4]._cmdID, (LPARAM)&iconTrailer);
-
-            toolbarIconsWithDarkMode iconForeign;
-            iconForeign.hToolbarBmp = (HBITMAP)::LoadImage(_hInst, MAKEINTRESOURCE(IDB_FOREIGN), IMAGE_BITMAP, 16, 16, LR_LOADMAP3DCOLORS);
-            iconForeign.hToolbarIcon = iconForeign.hToolbarBmp;
-            iconForeign.hToolbarIconDarkMode = iconForeign.hToolbarBmp;
-            ::SendMessage(nppData._nppHandle, NPPM_ADDTOOLBARICON_FORDARKMODE, (WPARAM)funcItem[5]._cmdID, (LPARAM)&iconForeign);
-
-            toolbarIconsWithDarkMode iconSerbianQuotes;
-            iconSerbianQuotes.hToolbarBmp = (HBITMAP)::LoadImage(_hInst, MAKEINTRESOURCE(IDB_SERBIAN_QUOTES), IMAGE_BITMAP, 16, 16, LR_LOADMAP3DCOLORS);
-            iconSerbianQuotes.hToolbarIcon = iconSerbianQuotes.hToolbarBmp;
-            iconSerbianQuotes.hToolbarIconDarkMode = iconSerbianQuotes.hToolbarBmp;
-            ::SendMessage(nppData._nppHandle, NPPM_ADDTOOLBARICON_FORDARKMODE, (WPARAM)funcItem[6]._cmdID, (LPARAM)&iconSerbianQuotes);
+            // Add toolbar icons for all commands
+            addToolbarIcon(IDB_HEAD, 0);
+            addToolbarIcon(IDB_TITLE, 1);
+            addToolbarIcon(IDB_HI, 2);
+            addToolbarIcon(IDB_QUOTE, 3);
+            addToolbarIcon(IDB_TRAILER, 4);
+            addToolbarIcon(IDB_FOREIGN, 5);
+            addToolbarIcon(IDB_SERBIAN_QUOTES, 6);
         }
         break;
 

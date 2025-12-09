@@ -19,6 +19,7 @@
 #define PLUGIN_INTERFACE_H
 
 #include "Notepad_plus_msgs.h"
+#include "Scintilla.h"
 
 struct NppData {
 	HWND _nppHandle;
@@ -33,6 +34,8 @@ struct ShortcutKey {
 	UCHAR _key;
 };
 
+typedef void (*PFUNCPLUGINCMD)(void);
+
 struct FuncItem {
 	TCHAR _itemName[64];
 	PFUNCPLUGINCMD _pFunc;
@@ -41,9 +44,8 @@ struct FuncItem {
 	ShortcutKey* _pShKey;
 };
 
-typedef void (__cdecl * PFUNCSETINFO)(NppData);
-typedef void (__cdecl * PFUNCPLUGINCMD)(void);
-typedef void (__cdecl * PBENOTIFIED)(SCNotification *);
-typedef LRESULT (__cdecl * PMESSAGEPROC)(UINT Message, WPARAM wParam, LPARAM lParam);
+typedef void (*PFUNCSETINFO)(NppData);
+typedef void (*PBENOTIFIED)(SCNotification *);
+typedef LRESULT (*PMESSAGEPROC)(UINT Message, WPARAM wParam, LPARAM lParam);
 
 #endif //PLUGIN_INTERFACE_H

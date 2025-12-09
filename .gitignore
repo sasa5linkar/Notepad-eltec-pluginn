@@ -87,3 +87,6 @@ _ReSharper*/
 
 # Exception: keep bin directory structure for distribution
 !XMLWrapTools/bin/.gitkeep
+
+# Test files (for CI only, not for Windows builds)
+Makefile

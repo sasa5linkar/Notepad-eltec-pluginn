@@ -6,6 +6,39 @@
 #ifndef SCINTILLA_H
 #define SCINTILLA_H
 
+#include <windows.h>
+
+// Type definitions
+typedef LRESULT sptr_t;
+typedef WPARAM uptr_t;
+
+// Scintilla notification structure
+struct SCNotification {
+	NMHDR nmhdr;
+	int position;
+	int ch;
+	int modifiers;
+	int modificationType;
+	const char *text;
+	int length;
+	int linesAdded;
+	int message;
+	uptr_t wParam;
+	sptr_t lParam;
+	int line;
+	int foldLevelNow;
+	int foldLevelPrev;
+	int margin;
+	int listType;
+	int x;
+	int y;
+	int token;
+	int annotationLinesAdded;
+	int updated;
+	int listCompletionMethod;
+	int characterSource;
+};
+
 typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, sptr_t lParam);
 
 // Scintilla messages

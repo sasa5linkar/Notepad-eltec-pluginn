@@ -39,3 +39,51 @@
 
 # debug information files
 *.dwo
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.opendb
+*.VC.db
+*.VC.opendb
+
+# Build directories
+Debug/
+Release/
+x64/
+x86/
+ipch/
+*.tlog
+
+# MSBuild binary and structured log
+*.binlog
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+
+# Test results
+TestResults/
+*.trx
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+
+# Exception: keep bin directory structure for distribution
+!XMLWrapTools/bin/.gitkeep
